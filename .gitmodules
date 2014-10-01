@@ -1,0 +1,3 @@
+[submodule "submodules/peano-extras"]
+	path = submodules/peano-extras
+	url = https://github.com/ericbaer/peano-extras
