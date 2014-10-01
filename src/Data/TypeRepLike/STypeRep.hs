@@ -26,7 +26,11 @@
 --
 -----------------------------------------------------------------------------
 {-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE OverloadedStrings #-}
 module Data.TypeRepLike.STypeRep (
     STypeRep(..),
     STyCon(..),

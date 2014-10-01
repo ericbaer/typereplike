@@ -13,6 +13,10 @@
 -----------------------------------------------------------------------------
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 module Data.TypeRepLike.TypeArity (
     -- * Arity of type constructors
     -- ** A digression

@@ -15,6 +15,10 @@
 -----------------------------------------------------------------------------
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE EmptyDataDecls #-}
+{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 module Data.TypeRepLike.TypeRepLike (
     TypeRepLike(..),
     -- * Utilities
@@ -125,7 +129,7 @@ taggedMkAppTy (Tagged f) (Tagged a) = Tagged $ likeMkAppTy f a
 
 -- | Tags a 'TypeRep'-like with 'a', but only if they represent the same type
 unify :: (Typeable a, Alternative m, TypeRepLike r c) =>
-    proxy a -> r -> m (Tagged s r)
+    proxy a -> r -> m (Tagged a r)
 unify a r = if taggedTypeRep a == Tagged r then pure $ Tagged r else empty
 
 -- | Applies a (possibly already partially-applied) type constructor 'f'
@@ -176,10 +180,10 @@ eqPoly (a, b)
             EmptyL -> Nothing
 
 -- | Casts 'a' to 'b' if they have the same 'TypeRepLike representation, where
---   'a' (but not 'b') is allowed to have 'Poly's. The caller is responsible
---   for ensuring that, e.g., $f x y Poly$ actually has the same internal
---   representation as @f x y z@, e.g. 'z' should be a phantom type variable.
---   FIXME: figure out how to use 'Coercible' to make this a bit safer?
+--   'a' (but not 'b') is allowed to have 'Phantom's. The caller must ensure
+--   that, e.g., $f x y 'Phantom'$ really has the same internal representation
+--   as $f x y z$, e.g. 'z' should be a phantom type variable.
+--   FIXME: can use 'Coercible' to make this a bit safer?
 --   FIXME: restrict to named phantom variables
 taggedCastPolymorphic :: forall a b r c. (TypeRepLike r c) =>
     Tagged a r -> Tagged b r -> a -> Maybe b
