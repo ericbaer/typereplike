@@ -4,7 +4,7 @@ typereplike
 Serializable form of [TypeRep](http://hackage.haskell.org/package/base-4.7.0.1/docs/Data-Typeable.html#t:TypeRep),
 along with some utilities for manipulating them.
 
-# Compiling and building
+## Compiling and building
 
 When compiling, be sure to update the submodules and add them to a cabal sandbox:
 
