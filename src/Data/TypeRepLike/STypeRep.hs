@@ -34,6 +34,7 @@
 module Data.TypeRepLike.STypeRep (
     STypeRep(..),
     STyCon(..),
+    asSTypeRep,
     mkTupleTc,
     listTc,
     funTc
@@ -67,6 +68,9 @@ data STyCon = STyCon {
         _sTyConModule :: Text,
         _sTyConName :: Text
     } deriving (Eq, Ord, Typeable, Data, Generic)
+
+asSTypeRep :: STypeRep -> STypeRep
+asSTypeRep = id
 
 -----------------------------------------------------------------------------
 -- Serialization and conversion

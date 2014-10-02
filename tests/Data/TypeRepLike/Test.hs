@@ -61,9 +61,6 @@ typeRepLikeTests = testGroup "TypeRepLike" [
     testCase "polymorphic cast where type variable unification should fail"
         testCastPolymorphicFail]
 
-asSTypeRep :: f STypeRep -> f STypeRep
-asSTypeRep = id
-
 int :: Tagged Int STypeRep
 int = taggedTypeRep (Proxy :: Proxy Int)
 
@@ -72,13 +69,13 @@ string = taggedTypeRep (Proxy :: Proxy String)
 
 testApply :: Assertion
 testApply = maybe `apply` int @=? maybeInt where
-    maybe = asSTypeRep $ taggedTypeRep (Proxy :: Proxy Maybe)
-    maybeInt = asSTypeRep $ taggedTypeRep (Proxy :: Proxy (Maybe Int))
+    maybe = fmap asSTypeRep $ taggedTypeRep (Proxy :: Proxy Maybe)
+    maybeInt = fmap asSTypeRep $ taggedTypeRep (Proxy :: Proxy (Maybe Int))
 
 testApply2 :: Assertion
 testApply2 = either `apply` int `apply` string @=? eitherIntString where
-    either = asSTypeRep $ taggedTypeRep (Proxy :: Proxy Either)
-    eitherIntString = asSTypeRep $ taggedTypeRep
+    either = fmap asSTypeRep $ taggedTypeRep (Proxy :: Proxy Either)
+    eitherIntString = fmap asSTypeRep $ taggedTypeRep
         (Proxy :: Proxy (Either Int String))
 
 testUnify :: Assertion
@@ -94,12 +91,12 @@ testCastPolymorphic :: Assertion
 testCastPolymorphic = b @=? taggedCastPolymorphic fooAAInt fooBBInt a where
     a = Foo 3 :: Foo (Phantom ()) (Phantom ()) Int
     b = Just (Foo 3) :: Maybe (Foo String String Int)
-    fooAAInt = asSTypeRep $ taggedTypeOf a
-    fooBBInt = asSTypeRep $ taggedTypeRep b
+    fooAAInt = fmap asSTypeRep $ taggedTypeOf a
+    fooBBInt = fmap asSTypeRep $ taggedTypeRep b
 
 testCastPolymorphicFail :: Assertion
 testCastPolymorphicFail = b @=? taggedCastPolymorphic fooAAInt fooBBInt a where
     a = Foo 3 :: Foo (Phantom ()) (Phantom ()) Int
     b = Nothing :: Maybe (Foo String Char Int)
-    fooAAInt = asSTypeRep $ taggedTypeOf a
-    fooBBInt = asSTypeRep $ taggedTypeRep b
+    fooAAInt = fmap asSTypeRep $ taggedTypeOf a
+    fooBBInt = fmap asSTypeRep $ taggedTypeRep b
